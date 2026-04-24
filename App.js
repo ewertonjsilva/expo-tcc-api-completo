@@ -15,7 +15,7 @@ import Produto from './src/telas/produto';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Produtos />
+      <CadastroUsuario />
       <StatusBar style="auto" />
     </View>
   );
