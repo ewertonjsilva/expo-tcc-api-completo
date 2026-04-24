@@ -9,10 +9,13 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.1.1",
+    "@react-native-picker/picker": "^2.11.4",
     "expo": "^55.0.17",
     "expo-status-bar": "~55.0.5",
     "react": "19.2.0",
     "react-native": "0.83.6",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-responsive-fontsize": "^0.5.1"
   },
   "private": true

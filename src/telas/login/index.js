@@ -1,9 +1,13 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
+
+import Logo from '../../componentes/logo';
 
 import styles from './styles';
 
+// export default function Login({ navigation }) {
 export default function Login() {
 
     // const navigation = useNavigation();
@@ -22,8 +26,8 @@ export default function Login() {
     function Acesso() {
         if (usuTemp.email === email && usuTemp.senha === senha) {
             // navigation.navigate('Home', {usuTemp});
-            Alert.alert('Sucesso', 'Login realizado com sucesso!', 
-                [{text: 'Ok', onPress: () => console.log('OK Pressed') }]
+            Alert.alert('Sucesso', 'Login realizado com sucesso!',
+                [{ text: 'Ok', onPress: () => console.log('OK Pressed') }]
             );
         } else {
             Alert.alert('Erro!', 'E-mail e/ou senha inválido!',
@@ -34,37 +38,42 @@ export default function Login() {
     }
 
     return (
-        <View>
+        <View style={styles.container}>
+            <Logo />
 
+            <Text style={styles.text}>Login</Text>
             <TextInput
                 style={styles.input}
                 placeholder='e-mail'
-                onChangeText={v => setEmail(v)} 
+                onChangeText={v => setEmail(v)}
                 value={email}
             />
             <TextInput
                 style={styles.input}
                 placeholder='senha'
-                onChangeText={v => setSenha(v)} 
+                onChangeText={v => setSenha(v)}
                 value={senha}
             />
-
             <TouchableOpacity
-                onPress={() => Acesso()}
-            >
-                <Text>Acessar sistema</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-                // onPress={() => navigation.navigate('CadUsuario')}
+                style={styles.btnCadUsu}
+            // onPress={() => navigation.navigate('CadUsuario')}
             >
                 <Text>Cadastro de usuário</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                // onPress={() => navigation.navigate('EsqSenha')}
+            // onPress={() => navigation.navigate('EsqSenha')}
             >
                 <Text>Esqueceu senha</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.btnEntrar}
+                onPress={() => Acesso()}
+            >
+                <MaterialIcons name="vpn-key" size={24} color="#FAFAFA" />
+                {/* <Text>Acessar sistema</Text> */}
+            </TouchableOpacity>
+
         </View>
     );
 }

@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import styles from './styles';
 
 // export default function Login({ navigation }) {
-export default function Login() {
+export default function Logo() {
     return (
         <View style={styles.logoContainer}>
             {/* <MaterialIcons name="fastfood" size={48} color="#7F0000" /> */}
