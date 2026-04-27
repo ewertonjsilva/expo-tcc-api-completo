@@ -3,36 +3,23 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center', 
+        justifyContent: 'space-around', 
         alignItems: 'center', 
         backgroundColor: '#FAFAFA',
         padding: 8, 
         width: '100%',
     }, 
     text: { 
-        fontSize: 24, 
-        color: '#7F0000'
-    }, 
-    input:{
-        borderColor: '#7F0000', 
-        borderWidth: 4, 
-        borderRadius: 20, 
-        width: '80%', 
-        marginVertical: 8, 
-        fontSize: 20, 
-        textAlign: 'center', 
-        padding: 8, 
-    }, 
-    containerBotoes: {
-        flexDirection: 'row', 
-        width: '80%', 
-        justifyContent: 'space-between',          
-    },     
-    txtCadUsu: {
+        fontSize: 32, 
         color: '#7F0000', 
-        fontStyle: 'italic', 
+        fontWeight: 'bold',
     }, 
-    btnEntrar: { 
+    textMensagem: { 
+        fontSize: 16, 
+        width: '80%',
+        
+    }, 
+    btnVoltar: { 
         borderColor: '#7F0000', 
         borderWidth: 4, 
         borderRadius: 20,
@@ -44,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#7F0000',
         padding: 10
     }, 
-    txtEntrar: {
+    txtVoltar: {
         fontSize: 20, 
         textAlign: 'center', 
         padding: 8, 

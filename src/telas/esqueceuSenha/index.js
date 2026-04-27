@@ -1,14 +1,25 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 
+import Logo from '../../componentes/logo';
+
+import styles from './styles';
+
 // export default function EsqSenha({ navigation }) {
 export default function EsqueceuSenha() {
     return (
-        <View>
-            <Text>Esqueceu Senha</Text>
+        <View style={styles.container}>
+
+            <Logo />
+            
+            <Text style={styles.text}>Esqueceu Senha</Text>
+            
+            <Text style={styles.textMensagem}>Entre em contato com o Administrador do sistema no email adm@bbg.com.br</Text>
+            
             <TouchableOpacity
-                // onPress={() => navigation.goBack()}
+                style={styles.btnVoltar}
+            // onPress={() => navigation.goBack()}
             >
-                <Text>Voltar</Text>
+                <Text style={styles.txtVoltar}>Voltar</Text>
             </TouchableOpacity>
         </View>
     );

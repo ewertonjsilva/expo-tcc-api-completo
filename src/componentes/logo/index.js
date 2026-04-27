@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-// import { MaterialIcons } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import styles from './styles';
 
@@ -7,7 +7,7 @@ import styles from './styles';
 export default function Logo() {
     return (
         <View style={styles.logoContainer}>
-            {/* <MaterialIcons name="fastfood" size={48} color="#7F0000" /> */}
+            <MaterialIcons name="fastfood" size={48} color="#7F0000" />                        
             <Text style={styles.logoText}>BomBuguer</Text>
         </View>
     );

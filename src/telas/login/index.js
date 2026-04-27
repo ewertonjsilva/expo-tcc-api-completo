@@ -54,25 +54,27 @@ export default function Login() {
                 onChangeText={v => setSenha(v)}
                 value={senha}
             />
-            <TouchableOpacity
-                style={styles.btnCadUsu}
-            // onPress={() => navigation.navigate('CadUsuario')}
-            >
-                <Text>Cadastro de usuário</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-            // onPress={() => navigation.navigate('EsqSenha')}
-            >
-                <Text>Esqueceu senha</Text>
-            </TouchableOpacity>
+            <View style={styles.containerBotoes}>
+                <TouchableOpacity
+                    style={styles.btnCadUsu}
+                // onPress={() => navigation.navigate('CadUsuario')}
+                >
+                    <Text style={styles.txtCadUsu}>Cadastro de usuário</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                // onPress={() => navigation.navigate('EsqSenha')}
+                >
+                    <Text style={styles.txtCadUsu}>Esqueceu senha</Text>
+                </TouchableOpacity>
+            </View>
 
-            <TouchableOpacity
-                style={styles.btnEntrar}
-                onPress={() => Acesso()}
-            >
-                <MaterialIcons name="vpn-key" size={24} color="#FAFAFA" />
-                {/* <Text>Acessar sistema</Text> */}
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.btnEntrar}
+                    onPress={() => Acesso()}
+                >
+                    <MaterialIcons name="vpn-key" size={24} color="#FAFAFA" />
+                    {/* <Text>Acessar sistema</Text> */}
+                </TouchableOpacity>
 
         </View>
     );
