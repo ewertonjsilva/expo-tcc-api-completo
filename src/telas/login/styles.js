@@ -1,3 +1,10 @@
+/**
+ * @file   src\telas\login\styles.js
+ * @author Ewerton
+ * @date   2026-04-28
+ * @desc   [Descrição do script ou função]
+ */
+
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

@@ -1,3 +1,10 @@
+/**
+ * @file   src\telas\login\index.js
+ * @author Ewerton
+ * @date   2026-04-28
+ * @desc   [Descrição do script ou função]
+ */
+
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
