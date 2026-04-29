@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 // import { Picker } from '@react-native-picker/picker';
 
 import styles from './styles';
@@ -27,6 +28,8 @@ export default function CadastroUsuario() {
     const [exibe, setExibe] = useState(0);
     const usu_tipo = 2; // Tipo de usuário cliente
     const cli_pts = 0; // Sem pontuação ao cadastrar
+    const navigation = useNavigation();
+
     const mudaTela = (tela) => {
         setExibe(tela);
     }
@@ -55,8 +58,18 @@ function Cadastro({ mudaTela }) {
     const [ufSel, setUfSel] = useState([]);
     const [cidSel, setCidSel] = useState([]);
 
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
+            <View>
+                <TouchableOpacity
+                    style={styles.btnCadUsu}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Text style={styles.txtCadUsu}>Voltar</Text>
+                </TouchableOpacity>
+            </View>
             <Text style={styles.text}>Cadastro de usuário</Text>
             <TextInput placeholder='Nome' style={styles.input} />
             <TextInput placeholder='E-mail' style={styles.input} />

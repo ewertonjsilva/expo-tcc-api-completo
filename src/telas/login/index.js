@@ -7,7 +7,7 @@
 
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import Logo from '../../componentes/logo';
@@ -17,10 +17,10 @@ import styles from './styles';
 // export default function Login({ navigation }) {
 export default function Login() {
 
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
 
-    const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
+    const [email, setEmail] = useState('jori@email.com');
+    const [senha, setSenha] = useState('123');
 
     const usuTemp = {
         id: 101,
@@ -32,7 +32,7 @@ export default function Login() {
 
     function Acesso() {
         if (usuTemp.email === email && usuTemp.senha === senha) {
-            // navigation.navigate('Home', {usuTemp});
+            navigation.navigate('Home', { usuTemp });
             Alert.alert('Sucesso', 'Login realizado com sucesso!',
                 [{ text: 'Ok', onPress: () => console.log('OK Pressed') }]
             );
@@ -64,7 +64,7 @@ export default function Login() {
             <View style={styles.containerBotoes}>
                 <TouchableOpacity
                     style={styles.btnCadUsu}
-                // onPress={() => navigation.navigate('CadUsuario')}
+                    onPress={() => navigation.navigate('CadastroUsuario')}
                 >
                     <Text style={styles.txtCadUsu}>Cadastro de usuário</Text>
                 </TouchableOpacity>
@@ -75,13 +75,13 @@ export default function Login() {
                 </TouchableOpacity>
             </View>
 
-                <TouchableOpacity
-                    style={styles.btnEntrar}
-                    onPress={() => Acesso()}
-                >
-                    <MaterialIcons name="vpn-key" size={24} color="#FAFAFA" />
-                    {/* <Text>Acessar sistema</Text> */}
-                </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.btnEntrar}
+                onPress={() => Acesso()}
+            >
+                <MaterialIcons name="vpn-key" size={24} color="#FAFAFA" />
+                {/* <Text>Acessar sistema</Text> */}
+            </TouchableOpacity>
 
         </View>
     );

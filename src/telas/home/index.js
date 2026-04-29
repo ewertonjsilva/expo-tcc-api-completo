@@ -1,6 +1,6 @@
-// import { useCallback } from 'react';
+import { useCallback } from 'react';
 import { View, Text, Button, Image, BackHandler } from 'react-native';
-// import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import Logo from '../../componentes/logo';
 import Produtos from '../produtos';
@@ -13,24 +13,24 @@ import img4 from '../../../assets/imgTemp/sorvete.jpeg';
 import img5 from '../../../assets/imgTemp/sucoLaranja.jpg';
 import img6 from '../../../assets/imgTemp/sucoVerde.jpg';
 
-// export default function Home({ route }) {
-export default function Home() {
+export default function Home({ route }) {
+// export default function Home() {
 
-    // const navigation = useNavigation();
-    // const { usuTemp } = route.params;
+    const navigation = useNavigation();
+    const { usuTemp } = route.params;
 
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         const onBackPress = () => {
-    //             return true; // impede voltar
-    //         };
+    useFocusEffect(
+        useCallback(() => {
+            const onBackPress = () => {
+                return true; // impede voltar
+            };
 
-    //         const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
-    //         return () => subscription.remove();
-    //     }, [])
-    // );
-    // console.log(usuTemp);
+            return () => subscription.remove();
+        }, [])
+    );
+    console.log(usuTemp);
 
     return (
         <View style={styles.container}>
@@ -39,8 +39,8 @@ export default function Home() {
             {/* <Text>{`Bem vindo ${usuTemp.nome}`}</Text> */}
             <Text>Olá Nome do usuário</Text>
             <Text>Você não pode voltar com o botão físico.</Text>
-            {/* <Button title="Voltar manualmente" onPress={() => navigation.goBack()} /> */}
-            <Button title="Voltar manualmente" />
+            <Button title="Voltar manualmente" onPress={() => navigation.goBack()} />
+            {/* <Button title="Voltar manualmente" /> */}
 
             <View style={styles.itensPesquisa}>
                 <View style={styles.itemPesquisa}>
