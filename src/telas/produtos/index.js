@@ -58,6 +58,7 @@ export default function Produtos() {
       { id: 12, nome: 'Suco', img: img6, valor: 'R$ 19,00', descricao: 'Lanche maravilhoso' },
     ]
   );
+  
   const numColumns = 3;
 
   return (
