@@ -69,7 +69,7 @@ export default function Login() {
                     <Text style={styles.txtCadUsu}>Cadastro de usuário</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                // onPress={() => navigation.navigate('EsqSenha')}
+                    onPress={() => navigation.navigate('EsqueceuSenha')}
                 >
                     <Text style={styles.txtCadUsu}>Esqueceu senha</Text>
                 </TouchableOpacity>
