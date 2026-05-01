@@ -1,7 +1,15 @@
+/**
+ * @file   src\telas\home\index.js
+ * @author Ewerton
+ * @date   2026-04-30
+ * @desc   [Descrição do script ou função]
+ */
+
 import { useCallback } from 'react';
 import { View, Text, Button, Image, BackHandler } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, CommonActions } from '@react-navigation/native';
 
+import { useAuth } from '../../contexts/AuthContext';
 import Logo from '../../componentes/logo';
 import Produtos from '../produtos';
 import styles from './styles';
@@ -13,11 +21,12 @@ import img4 from '../../../assets/imgTemp/sorvete.jpeg';
 import img5 from '../../../assets/imgTemp/sucoLaranja.jpg';
 import img6 from '../../../assets/imgTemp/sucoVerde.jpg';
 
-export default function Home({ route }) {
+export default function Home() {
 // export default function Home() {
 
     const navigation = useNavigation();
-    const { usuTemp } = route.params;
+
+    const { usuario, logOff } = useAuth();
 
     useFocusEffect(
         useCallback(() => {
@@ -30,16 +39,28 @@ export default function Home({ route }) {
             return () => subscription.remove();
         }, [])
     );
-    console.log(usuTemp);
 
+    function deslogar() {
+        // 1. Limpa o estado global
+        logOff();
+
+        // 2. Reseta a navegação e manda de volta pro Login
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Login' }], // Use o nome exato da sua rota de Login definida no StackLogin
+            })
+        );
+    }
+    
     return (
         <View style={styles.container}>
 
             <Logo />
             {/* <Text>{`Bem vindo ${usuTemp.nome}`}</Text> */}
-            <Text>Olá Nome do usuário</Text>
+            <Text>Bem vindo, {usuario?.nome}</Text>
             <Text>Você não pode voltar com o botão físico.</Text>
-            <Button title="Voltar manualmente" onPress={() => navigation.goBack()} />
+            <Button title="Voltar manualmente" onPress={() => deslogar()} />
             {/* <Button title="Voltar manualmente" /> */}
 
             <View style={styles.itensPesquisa}>

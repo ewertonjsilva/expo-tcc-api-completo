@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from '../telas/login';
 import CadastroUsuario from '../telas/cadastroUsuario';
 import EsqueceuSenha from '../telas/esqueceuSenha';
-import Home from '../telas/home';
+import TabHome from './tabHome';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +17,7 @@ function StackLogin() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="CadastroUsuario" component={CadastroUsuario} />
       <Stack.Screen name="EsqueceuSenha" component={EsqueceuSenha} />
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="TabHome" component={TabHome} />
     </Stack.Navigator>
   );
 }

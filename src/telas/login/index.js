@@ -10,6 +10,7 @@ import { View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { useAuth } from '../../contexts/AuthContext';
 import Logo from '../../componentes/logo';
 
 import styles from './styles';
@@ -18,6 +19,8 @@ import styles from './styles';
 export default function Login() {
 
     const navigation = useNavigation();
+
+    const { setUsuario } = useAuth();
 
     const [email, setEmail] = useState('jori@email.com');
     const [senha, setSenha] = useState('123');
@@ -32,7 +35,8 @@ export default function Login() {
 
     function Acesso() {
         if (usuTemp.email === email && usuTemp.senha === senha) {
-            navigation.navigate('Home', { usuTemp });
+            setUsuario(usuTemp);
+            navigation.navigate('TabHome');
             Alert.alert('Sucesso', 'Login realizado com sucesso!',
                 [{ text: 'Ok', onPress: () => console.log('OK Pressed') }]
             );
