@@ -1,45 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     View,
     Text,
     TextInput,
     TouchableOpacity,
     ScrollView,
-    Alert
+    Alert,
+    ActivityIndicator // Importado para feedback visual de carregamento
 } from 'react-native';
 
 import AlterarSenha from '../../componentes/alterarSenha';
 import FormEndereco from '../../componentes/formEndereco';
 
+import api from '../../services/api';
+
 import styles from './styles';
 
 const PerfilUsuario = () => {
-    // Dados baseados na tabela USUARIOS e CLIENTES
+    const idUsuario = 4;
+
+    // 1. Inicializado com strings vazias para evitar erro de "Uncontrolled Input"
     const [usuario, setUsuario] = useState({
-        usu_nome: 'Ewerton',
-        usu_email: 'contato@ewerton.dev',
-        usu_cpf: '12345678900',
-        cli_cel: '18999999999',
-        usu_dt_nasc: '28/04/1990' // Apenas leitura
+        usu_nome: '',
+        usu_email: '',
+        usu_cpf: '',
+        cli_cel: '',
+        usu_dt_nasc: ''
     });
 
-    // Lista de endereços baseada na tabela CLIENTE_ENDERECOS
     const [enderecos, setEnderecos] = useState([
         {
-            end_id: 1,
-            end_logradouro: 'Rua das Flores',
-            end_num: '123',
-            end_bairro: 'Centro',
-            end_principal: 1
-        },
-        {
-            end_id: 2,
-            end_logradouro: 'Rua dos Animais',
-            end_num: '995',
-            end_bairro: 'Cercadinho',
-            end_principal: 0
+            end_id: '',
+            end_logradouro: '',
+            end_num: '',
+            end_bairro: '',
+            end_principal: ''
         },
     ]);
+
+    // Estado para controlar a tela de carregamento
+    const [loading, setLoading] = useState(true);
+
+    const loadUsuario = async () => {
+        try {
+            // 2. Requisição para a API (ajuste para /usuarios se a sua rota não for /clientes)
+            const response = await api.get(`/clientes?id=${idUsuario}`);
+
+            // Verifica se a API retornou sucesso e se o array tem dados
+            if (response.data.sucesso && response.data.dados.length > 0) {
+                setUsuario(response.data.dados[0]);
+            } else {
+                Alert.alert('Aviso', 'Nenhum dado encontrado para este usuário.');
+            }
+        } catch (error) {
+            // 3. Corrigida a mensagem de erro (estava 'produtos')
+            Alert.alert('Erro', 'Não foi possível carregar os dados do usuário.');
+        } finally {
+            setLoading(false); // Desliga o ícone de carregamento independente de sucesso ou erro
+        }
+    };
+
+    const loadEnderecos = async () => {
+        const res = await api.get(`/endereco-cliente?id=${idUsuario}`);
+        if (res.data.sucesso) {
+            setEnderecos(res.data.dados);
+        }
+    };
+
+    useEffect(() => {
+        loadUsuario();
+        loadEnderecos();
+    }, []);
+
+
 
     // ESTADOS PARA O MODAL
     const [modalSenhaVisivel, setModalSenhaVisivel] = useState(false);
@@ -48,7 +81,6 @@ const PerfilUsuario = () => {
 
     // FUNÇÃO PARA ABRIR (Serve para Novo ou Editar)
     const manipularModal = (endereco = null) => {
-        // Se passar um endereço, ele carrega para editar. Se não, inicia vazio.
         setEnderecoParaEdicao(endereco || {
             end_logradouro: '',
             end_num: '',
@@ -60,23 +92,29 @@ const PerfilUsuario = () => {
     };
 
     const salvarEndereco = () => {
-        // Aqui entraria sua lógica de INSERT ou UPDATE no SQL
         console.log("Salvando no banco:", enderecoParaEdicao);
-
-        // Exemplo simples de atualização local
         if (enderecoParaEdicao.end_id) {
             setEnderecos(enderecos.map(e => e.end_id === enderecoParaEdicao.end_id ? enderecoParaEdicao : e));
         } else {
             setEnderecos([...enderecos, { ...enderecoParaEdicao, end_id: Math.random() }]);
         }
-
         setModalVisivel(false);
     };
 
     const salvarPerfil = () => Alert.alert("Sucesso", "Perfil atualizado!");
+
     const excluirEndereco = (id) => {
         setEnderecos(enderecos.filter(e => e.end_id !== id));
     };
+
+    // 4. Se estiver carregando, mostra o spinner antes de renderizar os inputs
+    if (loading) {
+        return (
+            <View style={[styles.main, { justifyContent: 'center', alignItems: 'center' }]}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
 
     return (
         <ScrollView style={styles.main}>
@@ -107,6 +145,7 @@ const PerfilUsuario = () => {
                                 style={styles.input}
                                 keyboardType="numeric"
                                 value={usuario.usu_cpf}
+                                editable={false} // Sugestão: CPF geralmente não deve ser editável após cadastro
                             />
                         </View>
                         <View style={{ flex: 1, marginLeft: 5 }}>
@@ -115,6 +154,7 @@ const PerfilUsuario = () => {
                                 style={styles.input}
                                 keyboardType="phone-pad"
                                 value={usuario.cli_cel}
+                                onChangeText={(t) => setUsuario({ ...usuario, cli_cel: t })}
                             />
                         </View>
                     </View>
@@ -127,6 +167,7 @@ const PerfilUsuario = () => {
                     <TouchableOpacity style={styles.btnPrincipal} onPress={salvarPerfil}>
                         <Text style={styles.txtBtnPrincipal}>ATUALIZAR DADOS</Text>
                     </TouchableOpacity>
+
                     <TouchableOpacity
                         style={[styles.btnSecundario, { borderStyle: 'solid', marginTop: 20 }]}
                         onPress={() => setModalSenhaVisivel(true)}
