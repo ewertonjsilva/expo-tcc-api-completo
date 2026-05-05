@@ -28,15 +28,7 @@ const PerfilUsuario = () => {
         usu_dt_nasc: ''
     });
 
-    const [enderecos, setEnderecos] = useState([
-        {
-            end_id: '',
-            end_logradouro: '',
-            end_num: '',
-            end_bairro: '',
-            end_principal: ''
-        },
-    ]);
+    const [enderecos, setEnderecos] = useState([]);
 
     // Estado para controlar a tela de carregamento
     const [loading, setLoading] = useState(true);
@@ -61,9 +53,13 @@ const PerfilUsuario = () => {
     };
 
     const loadEnderecos = async () => {
-        const res = await api.get(`/endereco-cliente?id=${idUsuario}`);
-        if (res.data.sucesso) {
-            setEnderecos(res.data.dados);
+        try {
+            const res = await api.get(`/endereco-cliente?id=${idUsuario}`);
+            if (res.data.sucesso) {
+                setEnderecos(res.data.dados);
+            }
+        } catch (error) {
+            console.error("Erro ao carregar endereços", error);
         }
     };
 
@@ -71,7 +67,6 @@ const PerfilUsuario = () => {
         loadUsuario();
         loadEnderecos();
     }, []);
-
 
 
     // ESTADOS PARA O MODAL
@@ -82,23 +77,46 @@ const PerfilUsuario = () => {
     // FUNÇÃO PARA ABRIR (Serve para Novo ou Editar)
     const manipularModal = (endereco = null) => {
         setEnderecoParaEdicao(endereco || {
-            end_logradouro: '',
-            end_num: '',
-            end_bairro: '',
-            end_complemento: '',
-            end_principal: 0
+            logradouro: '',
+            num: '',
+            bairro: '',
+            complemento: '',
+            idCidade: null,
+            principal: 0
         });
         setModalVisivel(true);
     };
 
-    const salvarEndereco = () => {
-        console.log("Salvando no banco:", enderecoParaEdicao);
-        if (enderecoParaEdicao.end_id) {
-            setEnderecos(enderecos.map(e => e.end_id === enderecoParaEdicao.end_id ? enderecoParaEdicao : e));
-        } else {
-            setEnderecos([...enderecos, { ...enderecoParaEdicao, end_id: Math.random() }]);
+    const salvarEndereco = async () => {
+        try {
+            let res;
+            if (enderecoParaEdicao.end_id) {
+                // EDIÇÃO (PUT) - Enviamos o ID na URL e os dados mapeados no body
+                res = await api.put(`/enderecos/${enderecoParaEdicao.end_id}`, {
+                    logradouro: enderecoParaEdicao.end_logradouro || enderecoParaEdicao.logradouro,
+                    num: enderecoParaEdicao.end_num || enderecoParaEdicao.num,
+                    bairro: enderecoParaEdicao.end_bairro || enderecoParaEdicao.bairro,
+                    complemento: enderecoParaEdicao.end_complemento || enderecoParaEdicao.complemento,
+                    idCidade: enderecoParaEdicao.cid_id || enderecoParaEdicao.idCidade,
+                    principal: enderecoParaEdicao.end_principal || enderecoParaEdicao.principal
+                });
+            } else {
+                // CADASTRO (POST)
+                res = await api.post('/enderecos', {
+                    ...enderecoParaEdicao,
+                    idUsuario: idUsuario
+                });
+            }
+
+            if (res.data.sucesso) {
+                Alert.alert("Sucesso", res.data.mensagem);
+                loadEnderecos(); // Recarrega a lista do banco
+                setModalVisivel(false);
+            }
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível salvar o endereço.");
+            console.error(error);
         }
-        setModalVisivel(false);
     };
 
     const salvarPerfil = () => Alert.alert("Sucesso", "Perfil atualizado!");
