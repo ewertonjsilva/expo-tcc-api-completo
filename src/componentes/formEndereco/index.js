@@ -21,16 +21,21 @@ const FormEndereco = ({ visivel, fechar, endereco, setEndereco, salvar }) => {
     const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
 
     // Sincroniza a UF e o Nome da Cidade quando o modal abre para edição
+    // Sincroniza os estados internos APENAS ao abrir o modal
     useEffect(() => {
-        if (visivel && endereco?.end_id) {
-            setUfSelecionada(endereco.cid_uf);
-            setBuscaCidade(endereco.cid_nome);
-        } else if (visivel) {
-            // Resetar estados internos ao abrir para novo cadastro
-            setUfSelecionada('');
-            setBuscaCidade('');
+        if (visivel) {
+            if (endereco?.end_id) {
+                // Se tem ID, estamos editando: preenche com o que vem do banco
+                setUfSelecionada(endereco.cid_uf || '');
+                setBuscaCidade(endereco.cid_nome || '');
+            } else {
+                // Se não tem ID, é novo cadastro: limpa tudo
+                setUfSelecionada('');
+                setBuscaCidade('');
+                setListaCidades([]); // Limpa lista de cidades anterior
+            }
         }
-    }, [visivel, endereco]);
+    }, [visivel]);
 
     // Carregar UFs ao montar o componente
     useEffect(() => {
@@ -128,9 +133,14 @@ const FormEndereco = ({ visivel, fechar, endereco, setEndereco, salvar }) => {
                             <Picker
                                 selectedValue={ufSelecionada}
                                 onValueChange={(itemValue) => {
-                                    setUfSelecionada(itemValue);
-                                    setBuscaCidade('');
-                                    setEndereco({ ...endereco, cid_id: null, idCidade: null });
+                                    if (itemValue !== ufSelecionada) {
+                                        setUfSelecionada(itemValue);
+                                        setBuscaCidade(''); // Limpa o nome da cidade digitada
+                                        setListaCidades([]); // Limpa a lista de busca
+                                        // Importante: limpa o ID da cidade no objeto principal, 
+                                        // pois a cidade antiga não pertence ao novo estado
+                                        setEndereco({ ...endereco, cid_id: null, idCidade: null });
+                                    }
                                 }}
                             >
                                 <Picker.Item label="Selecione um estado..." value="" />
@@ -148,7 +158,7 @@ const FormEndereco = ({ visivel, fechar, endereco, setEndereco, salvar }) => {
                             value={buscaCidade}
                             onChangeText={(t) => {
                                 setBuscaCidade(t);
-                                setMostrarSugestoes(true);
+                                if (t.length > 0) setMostrarSugestoes(true);
                             }}
                         />
 

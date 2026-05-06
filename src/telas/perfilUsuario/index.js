@@ -1,3 +1,10 @@
+/**
+ * @file   src\telas\perfilUsuario\index.js
+ * @author Ewerton
+ * @date   2026-05-06
+ * @desc   [Descrição do script ou função]
+ */
+
 import { useState, useEffect } from 'react';
 import {
     View,
@@ -92,7 +99,7 @@ const PerfilUsuario = () => {
             let res;
             if (enderecoParaEdicao.end_id) {
                 // EDIÇÃO (PUT) - Enviamos o ID na URL e os dados mapeados no body
-                res = await api.put(`/enderecos/${enderecoParaEdicao.end_id}`, {
+                res = await api.patch(`/endereco-cliente/${enderecoParaEdicao.end_id}`, {
                     logradouro: enderecoParaEdicao.end_logradouro || enderecoParaEdicao.logradouro,
                     num: enderecoParaEdicao.end_num || enderecoParaEdicao.num,
                     bairro: enderecoParaEdicao.end_bairro || enderecoParaEdicao.bairro,
@@ -102,7 +109,7 @@ const PerfilUsuario = () => {
                 });
             } else {
                 // CADASTRO (POST)
-                res = await api.post('/enderecos', {
+                res = await api.post('/endereco-cliente', {
                     ...enderecoParaEdicao,
                     idUsuario: idUsuario
                 });
@@ -121,8 +128,36 @@ const PerfilUsuario = () => {
 
     const salvarPerfil = () => Alert.alert("Sucesso", "Perfil atualizado!");
 
-    const excluirEndereco = (id) => {
-        setEnderecos(enderecos.filter(e => e.end_id !== id));
+    const excluirEndereco = async (id) => {
+        // 1. Pedir confirmação ao usuário
+        Alert.alert(
+            "Confirmar Exclusão",
+            "Tem certeza que deseja remover este endereço?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Excluir",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            // 2. Chamada para a API usando o método DELETE
+                            const res = await api.delete(`/endereco-cliente/${id}`);
+
+                            if (res.data.sucesso) {
+                                Alert.alert("Sucesso", res.data.mensagem);
+                                // 3. Recarrega a lista para atualizar os dados (e o novo endereço principal)
+                                loadEnderecos();
+                            }
+                        } catch (error) {
+                            // 4. Captura as mensagens de erro enviadas pelo backend
+                            // Ex: "Para excluir o endereço atual, um novo deve ser cadastrado."
+                            const mensagemErro = error.response?.data?.mensagem || "Não foi possível remover o endereço.";
+                            Alert.alert("Aviso", mensagemErro);
+                        }
+                    }
+                }
+            ]
+        );
     };
 
     // 4. Se estiver carregando, mostra o spinner antes de renderizar os inputs
@@ -209,8 +244,16 @@ const PerfilUsuario = () => {
                             <TouchableOpacity onPress={() => manipularModal(item)}>
                                 <Text style={styles.btnAcao}>Editar</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => excluirEndereco(item.end_id)}>
-                                <Text style={[styles.btnAcao, { color: '#7F0000', fontWeight: 'bold' }]}>Excluir</Text>
+
+                            <TouchableOpacity
+                                onPress={() => excluirEndereco(item.end_id)}
+                                // Opcional: deixa o botão cinza se for o único endereço
+                                disabled={enderecos.length <= 1}
+                            >
+                                <Text style={[
+                                    styles.btnAcao,
+                                    { color: enderecos.length <= 1 ? '#CCC' : '#7F0000', fontWeight: 'bold' }
+                                ]}>Excluir</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
