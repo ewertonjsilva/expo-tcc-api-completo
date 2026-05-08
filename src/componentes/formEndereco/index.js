@@ -132,6 +132,8 @@ const FormEndereco = ({ visivel, fechar, endereco, setEndereco, salvar }) => {
                         <View style={styles.pickerContainer}>
                             <Picker
                                 selectedValue={ufSelecionada}
+                                style={styles.pickerElement} // Adicione este estilo
+                                dropdownIconColor="#7F0000" // Cor da setinha no Android
                                 onValueChange={(itemValue) => {
                                     if (itemValue !== ufSelecionada) {
                                         setUfSelecionada(itemValue);
@@ -143,9 +145,9 @@ const FormEndereco = ({ visivel, fechar, endereco, setEndereco, salvar }) => {
                                     }
                                 }}
                             >
-                                <Picker.Item label="Selecione um estado..." value="" />
+                                <Picker.Item label="Selecione um estado..." value="" style={styles.pickerItem} />
                                 {listaUfs.map((item, index) => (
-                                    <Picker.Item key={index} label={item.cid_uf} value={item.cid_uf} />
+                                    <Picker.Item key={index} label={item.cid_uf} value={item.cid_uf} style={styles.pickerItem} />
                                 ))}
                             </Picker>
                         </View>
@@ -224,24 +226,38 @@ const styles = StyleSheet.create({
     titulo: { fontSize: 22, color: '#7F0000', fontWeight: 'bold', marginBottom: 15 },
     label: { color: '#7F0000', fontWeight: 'bold', marginBottom: 5 },
     input: {
+        height: 55, // Altura fixa igual ao Picker
         borderWidth: 3,
         borderColor: '#7F0000',
         borderRadius: 15,
-        padding: 10,
+        paddingHorizontal: 15, // Padding apenas nas laterais
         marginBottom: 15,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        color: '#000',
+        fontSize: 16,
     },
     inputDesativado: {
         backgroundColor: '#EEE',
-        borderColor: '#CCC'
+        borderColor: '#CCC',
+        color: '#999'
     },
     pickerContainer: {
+        height: 55, // Mesma altura do input
         borderWidth: 3,
         borderColor: '#7F0000',
         borderRadius: 15,
         marginBottom: 15,
         backgroundColor: '#FFF',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        justifyContent: 'center', // Centraliza o Picker verticalmente
+    },
+    pickerElement: {
+        width: '100%',
+        height: '100%', // Ocupa todo o container
+        color: '#7F0000', // Cor do texto selecionado
+    },
+    pickerItem: {
+        fontSize: 16, // Tenta igualar a fonte do input
     },
     listaSugestoes: {
         borderWidth: 2,
