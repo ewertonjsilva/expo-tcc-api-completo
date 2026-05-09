@@ -98,7 +98,7 @@ const PerfilUsuario = () => {
         try {
             let res;
             if (enderecoParaEdicao.end_id) {
-                // EDIÇÃO (PUT) - Enviamos o ID na URL e os dados mapeados no body
+                // EDIÇÃO (PATCH) - Enviamos o ID na URL e os dados mapeados no body
                 res = await api.patch(`/endereco-cliente/${enderecoParaEdicao.end_id}`, {
                     logradouro: enderecoParaEdicao.end_logradouro || enderecoParaEdicao.logradouro,
                     num: enderecoParaEdicao.end_num || enderecoParaEdicao.num,
